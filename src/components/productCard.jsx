@@ -28,7 +28,7 @@ export default function ProductCard({ product }) {
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg">
-              <Link href={`/product/${product._id}`}>
+              <Link href={`/shop/${product._id}`}>
                 <span aria-hidden="true" className="absolute inset-0" />
                 {product.name}
               </Link>
