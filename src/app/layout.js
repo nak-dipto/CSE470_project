@@ -1,8 +1,10 @@
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/modeToggle";
 import { Toaster } from "sonner";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import Header from "@/components/header";
 export const metadata = {
   title: "ByteBuy",
   description: "CSE470-Project",
@@ -19,9 +21,13 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            <main>{children}</main>
-            <Toaster />
-            <ModeToggle />
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <Header />
+                <main>{children}</main> <Toaster />
+              </SidebarInset>
+            </SidebarProvider>
           </ThemeProvider>
         </body>
       </AuthProvider>
