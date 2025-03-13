@@ -24,12 +24,20 @@ export function AppSidebar({ ...props }) {
   const data = {
     navMain: [
       {
-        title: "General",
+        title: "",
         items: [
           {
             title: "Home",
             url: "/",
           },
+          ...(session?.user.role == "user"
+            ? [
+                {
+                  title: "Shop",
+                  url: "/shop",
+                },
+              ]
+            : []),
           ...(session
             ? [
                 {
