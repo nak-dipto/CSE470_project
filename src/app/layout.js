@@ -25,7 +25,8 @@ export default function RootLayout({ children }) {
               <AppSidebar />
               <SidebarInset>
                 <Header />
-                <main>{children}</main> <Toaster />
+                {children}
+                <Toaster />
               </SidebarInset>
             </SidebarProvider>
           </ThemeProvider>

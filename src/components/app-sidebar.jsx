@@ -38,6 +38,14 @@ export function AppSidebar({ ...props }) {
                 },
               ]
             : []),
+          ...(session?.user.role == "admin"
+            ? [
+                {
+                  title: "Add Product",
+                  url: "/admin/create-product",
+                },
+              ]
+            : []),
           ...(session
             ? [
                 {
