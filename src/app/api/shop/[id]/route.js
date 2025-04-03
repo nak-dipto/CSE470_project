@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Product from "@/models/product.model";
 
 export async function GET(_, { params }) {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const product = await Product.findById(id);

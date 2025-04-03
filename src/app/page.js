@@ -1,5 +1,5 @@
 "use client";
-import { FaBagShopping } from "react-icons/fa6";
+import { FaBagShopping, FaUserShield } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
 export default function Home() {
   const { data: session } = useSession();
@@ -28,14 +28,14 @@ export default function Home() {
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
             href={
-              currentUserRole === "USER"
+              currentUserRole === "user"
                 ? "/shop"
-                : currentUserRole === "ADMIN"
+                : currentUserRole === "admin"
                 ? "/admin"
-                : "/signup"
+                : "/api/auth/signin"
             }
           >
-            {currentUserRole === "ADMIN" ? (
+            {currentUserRole === "admin" ? (
               <>
                 <FaUserShield className="dark inline align-middle" size={20} />
                 Go to Admin Panel

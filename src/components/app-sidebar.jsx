@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/sidebar";
 import { useSession } from "next-auth/react";
 
-// This is sample data.
-
 export function AppSidebar({ ...props }) {
   const { data: session } = useSession();
   const data = {
@@ -74,7 +72,7 @@ export function AppSidebar({ ...props }) {
           <FaComputer className="dark inline align-middle" size={40} />
           &nbsp;ByteBuy
         </div>
-        <SearchForm />
+        {session?.user.role == "user" ? <SearchForm /> : ""}
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
