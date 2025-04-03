@@ -17,9 +17,9 @@ export default function ProductCard({ product }) {
           <Bookmark className="size-4" />
         </Button>
         <Image
-          className="aspect-square w-full"
+          className="aspect-square object-cover w-full"
           src={product.image}
-          width={300}
+          width={500}
           height={500}
           alt={`${product.name} Image`}
         />
@@ -35,13 +35,19 @@ export default function ProductCard({ product }) {
             </h3>
             <p className="text-sm text-muted-foreground">{product.category}</p>
           </div>
-          <p className="text-lg font-semibold">$ {product.price}</p>
+          <p className="text-lg font-semibold">${product.price}</p>
         </div>
       </CardContent>
       <CardFooter className="border-t-1 p-1">
-        <Button variant="ghost" className="w-full">
-          <PlusIcon className="size-4 me-1" /> Add to Cart
-        </Button>
+        {product.stock == 0 ? (
+          <Button variant="destructive" className="w-full z-100">
+            Out of Stock
+          </Button>
+        ) : (
+          <Button variant="ghost" className="w-full z-100">
+            <PlusIcon className="size-4 me-1" /> Add to Cart
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

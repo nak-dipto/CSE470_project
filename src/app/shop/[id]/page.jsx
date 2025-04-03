@@ -83,7 +83,7 @@ const Product = ({ params }) => {
 
             <section className="mt-4">
               <div className="mt-4 space-y-6">
-                <p className="text-base text-muted-foreground">
+                <p className="text-base text-muted-foreground text-justify">
                   {product.description}
                 </p>
               </div>
@@ -94,7 +94,11 @@ const Product = ({ params }) => {
             </section>
 
             <div className="mt-10">
-              <Button>Add to cart</Button>
+              {product.stock == 0 ? (
+                <Button variant="destructive">Out of Stock</Button>
+              ) : (
+                <Button>Add to cart</Button>
+              )}
             </div>
           </div>
         </div>
