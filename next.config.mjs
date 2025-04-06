@@ -5,6 +5,9 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "cdna.pcpartpicker.com",
+      },{
+        protocol: "https",
+        hostname: "www.startech.com.bd",
       },
     ],
   },
