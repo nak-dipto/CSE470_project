@@ -31,7 +31,7 @@ export default function Home() {
               currentUserRole === "user"
                 ? "/shop"
                 : currentUserRole === "admin"
-                ? "/admin"
+                ? "/admin/shop"
                 : "/api/auth/signin"
             }
           >
