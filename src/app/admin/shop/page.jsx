@@ -12,12 +12,14 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function AllProducts({ className, ...props }) {
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState([]);
   const [totalProducts, setTotalProducts] = useState([]);
   const [totalStock, setTotalStock] = useState([]);
+  const router = useRouter();
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`/api/shop/${id}`, {
@@ -114,10 +116,15 @@ export default function AllProducts({ className, ...props }) {
                       {product.stock}
                     </TableCell>
                     <TableCell className="flex justify-center items-center h-full">
-                      <FaEdit className="text-lg mr-2" />
+                      <FaEdit
+                        className="text-lg  mr-2 cursor-pointer"
+                        onClick={() =>
+                          router.push(`/admin/shop/${product._id}`)
+                        }
+                      />
                       <FaTrashAlt
                         className="text-lg cursor-pointer"
-                        onClick={() => handleDelete(product._id)} // Pass the product ID to handleDelete
+                        onClick={() => handleDelete(product._id)}
                       />
                     </TableCell>
                   </TableRow>
