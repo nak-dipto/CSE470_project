@@ -8,6 +8,9 @@ const nextConfig = {
       },{
         protocol: "https",
         hostname: "www.startech.com.bd",
+      },{
+        protocol: "https",
+        hostname: "m.media-amazon.com",
       },
     ],
   },
