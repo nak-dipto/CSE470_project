@@ -17,7 +17,7 @@ export default function ProductCard({ product }) {
           <Bookmark className="size-4" />
         </Button>
         <Image
-          className="aspect-square object-cover w-full"
+          className="aspect-square object-contain"
           src={product.image}
           width={500}
           height={500}
