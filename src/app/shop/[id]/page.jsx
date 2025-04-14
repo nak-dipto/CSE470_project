@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { use, useEffect, useState } from "react";
-
+import ProductReviews from "@/components/ProductReviews";
 const Product = ({ params }) => {
   const { data: session } = useSession();
   let currentUserRole = session?.user.role;
   const [product, setProduct] = useState();
+  const [reviews, setReviews] = useState();
   const [loading, setLoading] = useState(true);
   const { id } = use(params);
   const getProduct = async () => {
@@ -23,6 +24,7 @@ const Product = ({ params }) => {
       }
       const data = await response.json();
       setProduct(data.product);
+      setReviews(data.reviews);
       return data;
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
@@ -106,6 +108,7 @@ const Product = ({ params }) => {
           </div>
         </div>
       </div>
+      <ProductReviews product={id} reviews={reviews} />
     </div>
   );
 };

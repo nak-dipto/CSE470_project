@@ -26,24 +26,6 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    orders: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
-      },
-    ],
-    bookmarks: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Bookmark",
-      },
-    ],
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
   },
   {
     timestamps: true,

@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 import Product from "@/models/product.model";
-
+import Review from "@/models/review.model";
 export async function GET(_, { params }) {
   const { id } = await params;
 
   try {
     const product = await Product.findById(id);
-    return NextResponse.json({ product });
+    const reviews = await Review.find({
+      productId: { $regex: id, $options: "i" },
+    });
+    return NextResponse.json({ product, reviews });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to get product" },
@@ -35,7 +38,6 @@ export async function DELETE(_, { params }) {
 
 export async function PUT(request) {
   const body = await request.json();
-  console.log(body);
   const { _id, name, description, price, stock, image, category } = body;
   if (
     !_id ||
@@ -46,7 +48,6 @@ export async function PUT(request) {
     !image ||
     !category
   ) {
-    console.log(_id, name, description, price, stock, image, category);
     return NextResponse.json(
       { error: "You must fill all the required fields!" },
       { status: 200 }
