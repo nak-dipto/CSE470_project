@@ -5,7 +5,6 @@ import { Bookmark, PlusIcon } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 export default function ProductCard({ product }) {
-  console.log(product);
   return (
     <Card className="w-[300px] group relative space-y-4 overflow-hidden m-4 p-0">
       <figure className="group-hover:opacity-90">
