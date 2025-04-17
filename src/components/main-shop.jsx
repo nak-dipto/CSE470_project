@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-const Products = ({ categories, products, bookmarks }) => {
+const Products = ({ categories, products, bookmarks, cart }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSort, setSelectedSort] = useState("");
 
@@ -56,7 +56,7 @@ const Products = ({ categories, products, bookmarks }) => {
       return sortedArray; // No sort, return the original array
     }
   };
-
+  const userCart = cart.filter((item) => item.user === user);
   const bookmark = bookmarks.filter((item) => item.user === user);
   console.log(bookmark);
   // Apply filter and then sorting
@@ -110,6 +110,9 @@ const Products = ({ categories, products, bookmarks }) => {
             product={product}
             user={user}
             bookmarked={bookmark.find((item) => item.productId === product._id)}
+            addedtoCart={userCart.find(
+              (item) => item.productId === product._id
+            )}
           />
         ))}
       </div>

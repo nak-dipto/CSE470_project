@@ -8,9 +8,10 @@ import { use, useEffect, useState } from "react";
 import ProductReviews from "@/components/ProductReviews";
 const Product = ({ params }) => {
   const { data: session } = useSession();
-  let currentUserRole = session?.user.role;
+  let user = session?.user.email;
   const [product, setProduct] = useState();
   const [reviews, setReviews] = useState();
+  const [addedtoCart, setAddedtoCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = use(params);
   const getProduct = async () => {
@@ -18,13 +19,24 @@ const Product = ({ params }) => {
       setLoading(true);
 
       const response = await fetch(`/api/shop/${id}`);
+      const response1 = await fetch("/api/cart");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      if (!response1.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
+      const data1 = await response1.json();
       setProduct(data.product);
       setReviews(data.reviews);
+      // setCart(data1.cart || []);
+      const userCart = data1.cart.filter((item) => item.user === user);
+      const addedtoCart = userCart.find(
+        (item) => item.productId === data.product._id
+      );
+      setAddedtoCart(addedtoCart);
       return data;
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
@@ -35,7 +47,7 @@ const Product = ({ params }) => {
 
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [session]);
 
   if (!product) {
     if (loading) {
@@ -95,14 +107,76 @@ const Product = ({ params }) => {
               </p>
             </section>
             <div className="mt-10">
-              {product.stock == 0 ? (
-                <Button variant="destructive">Out of Stock</Button>
-              ) : currentUserRole != "user" ? (
-                <a href="/auth/signup">
-                  <Button>Add to cart</Button>
-                </a>
+              {product.stock === 0 ? (
+                <Button variant="destructive" className="w-full z-1">
+                  Out of Stock
+                </Button>
+              ) : addedtoCart ? (
+                <Button
+                  variant="ghost"
+                  className="w-full z-1"
+                  onClick={async () => {
+                    try {
+                      const response = await fetch(
+                        `/api/cart/${addedtoCart._id}`,
+                        {
+                          method: "DELETE",
+                        }
+                      );
+
+                      if (!response.ok) {
+                        throw new Error(
+                          `HTTP error! status: ${response.status}`
+                        );
+                      }
+                    } catch (error) {
+                      console.error(
+                        "There was a problem with the fetch operation:",
+                        error
+                      );
+                    } finally {
+                      setLoading(false);
+                      window.location.reload();
+                    }
+                  }}
+                >
+                  Added
+                </Button>
               ) : (
-                <Button>Add to cart</Button>
+                <Button
+                  // variant="ghost"
+                  className="w-full z-1"
+                  onClick={async () => {
+                    try {
+                      const response = await fetch("/api/cart", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          productId: product._id,
+                          user: user,
+                        }),
+                      });
+
+                      if (!response.ok) {
+                        throw new Error(
+                          `HTTP error! status: ${response.status}`
+                        );
+                      }
+
+                      const result = await response.json();
+                      console.log("Item added to cart:", result);
+                    } catch (error) {
+                      console.error("Error adding to cart:", error);
+                    } finally {
+                      setLoading(false);
+                      window.location.reload();
+                    }
+                  }}
+                >
+                  Add to Cart
+                </Button>
               )}
             </div>
           </div>

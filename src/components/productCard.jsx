@@ -5,7 +5,12 @@ import { Bookmark, PlusIcon, BookmarkCheck } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-export default function ProductCard({ product, user, bookmarked }) {
+export default function ProductCard({
+  product,
+  user,
+  bookmarked,
+  addedtoCart,
+}) {
   const [loading, setLoading] = useState(false);
   const deleteBookmark = async (id) => {
     try {
@@ -57,7 +62,6 @@ export default function ProductCard({ product, user, bookmarked }) {
     } else {
       alert("You need to sign in to review a product!");
     }
-    // console.log(product);
     // console.log(user);
   };
   return (
@@ -104,12 +108,67 @@ export default function ProductCard({ product, user, bookmarked }) {
         </div>
       </CardContent>
       <CardFooter className="border-t-1 p-1">
-        {product.stock == 0 ? (
+        {product.stock === 0 ? (
           <Button variant="destructive" className="w-full z-1">
             Out of Stock
           </Button>
+        ) : addedtoCart ? (
+          <Button
+            variant="ghost"
+            className="w-full z-1"
+            onClick={async () => {
+              try {
+                const response = await fetch(`/api/cart/${addedtoCart._id}`, {
+                  method: "DELETE",
+                });
+
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                }
+              } catch (error) {
+                console.error(
+                  "There was a problem with the fetch operation:",
+                  error
+                );
+              } finally {
+                setLoading(false);
+                window.location.reload();
+              }
+            }}
+          >
+            Added
+          </Button>
         ) : (
-          <Button variant="ghost" className="w-full z-1">
+          <Button
+            variant="ghost"
+            className="w-full z-1"
+            onClick={async () => {
+              try {
+                const response = await fetch("/api/cart", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    productId: product._id,
+                    user: user,
+                  }),
+                });
+
+                if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log("Item added to cart:", result);
+              } catch (error) {
+                console.error("Error adding to cart:", error);
+              } finally {
+                setLoading(false);
+                window.location.reload();
+              }
+            }}
+          >
             <PlusIcon className="size-4 me-1" /> Add to Cart
           </Button>
         )}

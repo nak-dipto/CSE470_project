@@ -6,19 +6,25 @@ const Page = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
+  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const getProducts = async () => {
     try {
       const response = await fetch("/api/shop");
+      const response1 = await fetch("/api/cart");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      if (!response1.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
+      const data1 = await response1.json();
       setProducts(data.products || []);
-
-      setBookmarks(data.bookmarks);
+      setBookmarks(data.bookmarks || []);
+      setCart(data1.cart || []);
       const uniqueCategories = [
         ...new Set(data.products.map((product) => product.category)),
       ].sort();
@@ -49,6 +55,7 @@ const Page = () => {
       categories={categories}
       products={products}
       bookmarks={bookmarks}
+      cart={cart}
     />
   );
 };
