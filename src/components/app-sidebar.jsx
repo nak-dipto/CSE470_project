@@ -34,6 +34,10 @@ export function AppSidebar({ ...props }) {
                   title: "Shop",
                   url: "/shop",
                 },
+                {
+                  title: "My Bookmarks",
+                  url: "/bookmarks",
+                },
               ]
             : []),
           ...(session?.user.role == "admin"

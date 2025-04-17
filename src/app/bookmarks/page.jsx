@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import Products from "@/components/main-shop";
 import { Loader2 } from "lucide-react";
 const Page = () => {
+  const { data: session } = useSession();
+  let user = session?.user.email;
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
@@ -16,11 +19,21 @@ const Page = () => {
       }
 
       const data = await response.json();
-      setProducts(data.products || []);
 
-      setBookmarks(data.bookmarks);
+      const userBookmarks =
+        data.bookmarks?.filter((item) => item.user === user) || [];
+      setBookmarks(userBookmarks);
+      console.log(userBookmarks);
+
+      const matchedProducts =
+        data.products?.filter((product) =>
+          userBookmarks.some((bookmark) => bookmark.productId === product._id)
+        ) || [];
+
+      setProducts(matchedProducts);
+
       const uniqueCategories = [
-        ...new Set(data.products.map((product) => product.category)),
+        ...new Set(matchedProducts.map((product) => product.category)),
       ].sort();
 
       uniqueCategories.unshift("All");
@@ -33,8 +46,10 @@ const Page = () => {
   };
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    if (session) {
+      getProducts();
+    }
+  }, [session]);
 
   if (loading) {
     return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import ProductCard from "@/components/productCard";
 import {
   Select,
@@ -11,10 +12,12 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-const Products = ({ categories, products }) => {
+const Products = ({ categories, products, bookmarks }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSort, setSelectedSort] = useState("");
 
+  const { data: session } = useSession();
+  let user = session?.user.email;
   const sortCats = [
     "Newest First",
     "Oldest First",
@@ -54,6 +57,8 @@ const Products = ({ categories, products }) => {
     }
   };
 
+  const bookmark = bookmarks.filter((item) => item.user === user);
+  console.log(bookmark);
   // Apply filter and then sorting
   let filteredList = filterTags(products);
   filteredList = sortTags(filteredList);
@@ -100,7 +105,12 @@ const Products = ({ categories, products }) => {
 
       <div className="flex flex-wrap justify-center mt-10">
         {filteredList.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <ProductCard
+            key={product._id}
+            product={product}
+            user={user}
+            bookmarked={bookmark.find((item) => item.productId === product._id)}
+          />
         ))}
       </div>
     </>

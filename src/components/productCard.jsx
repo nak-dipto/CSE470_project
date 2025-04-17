@@ -1,20 +1,86 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Bookmark, PlusIcon } from "lucide-react";
+import { Bookmark, PlusIcon, BookmarkCheck } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+export default function ProductCard({ product, user, bookmarked }) {
+  const [loading, setLoading] = useState(false);
+  const deleteBookmark = async (id) => {
+    try {
+      const response = await fetch(`/api/bookmarks/${id}`, {
+        method: "DELETE",
+      });
 
-export default function ProductCard({ product }) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    } finally {
+      setLoading(false);
+
+      window.location.reload();
+    }
+  };
+  const handleBookmark = async () => {
+    if (user) {
+      try {
+        setLoading(true);
+
+        const response = await fetch("/api/bookmarks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: product,
+            user,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        return data;
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      } finally {
+        setLoading(false);
+
+        window.location.reload();
+      }
+    } else {
+      alert("You need to sign in to review a product!");
+    }
+    // console.log(product);
+    // console.log(user);
+  };
   return (
     <Card className="w-[300px] group relative space-y-4 overflow-hidden m-4 p-0">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="bg-white/70 absolute top-3 end-3 rounded-full dark:text-black z-100 flex items-center gap-2 px-3"
+        onClick={() =>
+          bookmarked ? deleteBookmark(bookmarked._id) : handleBookmark()
+        }
+        disabled={loading}
+      >
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : bookmarked ? (
+          <BookmarkCheck className="h-4 w-4" />
+        ) : (
+          <Bookmark className="h-4 w-4" />
+        )}
+      </Button>
+
       <figure className="group-hover:opacity-90">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="bg-white/70 absolute top-3 end-3 rounded-full dark:text-black"
-        >
-          <Bookmark className="size-4" />
-        </Button>
         <Image
           className="aspect-square object-contain"
           src={product.image}
@@ -39,11 +105,11 @@ export default function ProductCard({ product }) {
       </CardContent>
       <CardFooter className="border-t-1 p-1">
         {product.stock == 0 ? (
-          <Button variant="destructive" className="w-full z-100">
+          <Button variant="destructive" className="w-full z-1">
             Out of Stock
           </Button>
         ) : (
-          <Button variant="ghost" className="w-full z-100">
+          <Button variant="ghost" className="w-full z-1">
             <PlusIcon className="size-4 me-1" /> Add to Cart
           </Button>
         )}
