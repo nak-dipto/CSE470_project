@@ -63,7 +63,13 @@ export default function AllOrders({ className, ...props }) {
           );
         }, 0)
       );
-      setTotalStock(data.orders.reduce((acc, order) => acc + order.stock, 0));
+      setTotalStock(
+        data.orders.reduce(
+          (sum, order) =>
+            sum + order.items.reduce((s, item) => s + item.quantity, 0),
+          0
+        )
+      );
       setTotalOrders(data.orders.length);
       return data;
     } catch (error) {
@@ -74,16 +80,6 @@ export default function AllOrders({ className, ...props }) {
   useEffect(() => {
     getOrders();
   }, []);
-  //   const total = orders.reduce((orderAcc, order) => {
-  //     return (
-  //       orderAcc +
-  //       order.items.reduce((itemAcc, item) => {
-  //         return itemAcc + item.quantity * item.price;
-  //       }, 0)
-  //     );
-  //   }, 0);
-
-  //   console.log("Total:", total); // Output: Total: 7222
   return (
     <>
       <p className="mt-5 w-full text-center text-2xl">Order History</p>
@@ -159,6 +155,7 @@ export default function AllOrders({ className, ...props }) {
                   <TableCell className="text-center"></TableCell>
                   <TableCell className="text-center">${totalPrice}</TableCell>
                   <TableCell className="text-center">{totalStock}</TableCell>
+                  <TableCell className="text-center"></TableCell>
                   <TableCell className="text-center"></TableCell>
                 </TableRow>
               </TableFooter>
