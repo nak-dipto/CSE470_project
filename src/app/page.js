@@ -1,5 +1,10 @@
 "use client";
-import { FaBagShopping, FaUserShield } from "react-icons/fa6";
+import {
+  FaBagShopping,
+  FaUserShield,
+  FaCirclePlus,
+  FaList,
+} from "react-icons/fa6";
 import { useSession } from "next-auth/react";
 export default function Home() {
   const { data: session } = useSession();
@@ -31,14 +36,14 @@ export default function Home() {
               currentUserRole === "user"
                 ? "/shop"
                 : currentUserRole === "admin"
-                ? "/admin/shop"
+                ? "/admin/create-product"
                 : "/api/auth/signin"
             }
           >
             {currentUserRole === "admin" ? (
               <>
-                <FaUserShield className="dark inline align-middle" size={20} />
-                Go to Admin Panel
+                <FaCirclePlus className="dark inline align-middle" size={20} />
+                Add Products
               </>
             ) : (
               <>
@@ -47,6 +52,26 @@ export default function Home() {
               </>
             )}
           </a>
+          {currentUserRole === "admin" ? (
+            <>
+              <a
+                className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+                href="/admin/shop"
+              >
+                <FaList className="inline align-middle" size={20} />
+                Product List
+              </a>
+              <a
+                className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+                href="/admin/orders"
+              >
+                <FaList className="inline align-middle" size={20} />
+                Order History
+              </a>
+            </>
+          ) : (
+            ""
+          )}
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
             href="/about"
