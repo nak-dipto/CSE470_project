@@ -1,4 +1,5 @@
-// components/header.js
+"use client";
+import { useRouter } from "next/router";
 import { FaComputer } from "react-icons/fa6";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -15,8 +16,10 @@ const Header = () => {
         />
       </div>
       <div className="text-2xl font-bold flex items-center">
-        <FaComputer className="dark inline align-middle" size={40} />
-        &nbsp;ByteBuy
+        <a className="flex items-center" href="/">
+          <FaComputer className="dark inline align-middle" size={40} />
+          &nbsp;ByteBuy
+        </a>
       </div>
       <div>
         <ModeToggle />
