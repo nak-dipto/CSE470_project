@@ -23,7 +23,7 @@ export default function AllOrders({ className, ...props }) {
   const router = useRouter();
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/api/shop/${id}`, {
+      const response = await fetch(`/api/order/${id}`, {
         method: "DELETE",
       });
 
