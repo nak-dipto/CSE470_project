@@ -63,12 +63,15 @@ const Page = () => {
   }
 
   return (
-    <Products
-      categories={categories}
-      products={products}
-      bookmarks={bookmarks}
-      cart={cart}
-    />
+    <>
+      <p className="text-5xl font-black mt-8 mx-10">Bookmarks</p>
+      <Products
+        categories={categories}
+        products={products}
+        bookmarks={bookmarks}
+        cart={cart}
+      />
+    </>
   );
 };
 

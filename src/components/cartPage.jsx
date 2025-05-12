@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import ProductCard from "@/components/cartCard";
@@ -7,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "./ui/button";
 const Products = ({ products, cart }) => {
+  const router = useRouter();
   const [isGift, setIsGift] = useState(false);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -78,7 +80,7 @@ const Products = ({ products, cart }) => {
     </div>
   ) : (
     <>
-      <p className="text-5xl font-black mt-8 mx-10">My Cart</p>
+      <p className="text-5xl font-black mt-8 mx-10">Cart</p>
       <div className="flex justify-between items-start mt-10 mx-10">
         {/* Products List */}
         <div className="grid justify-center gap-6 w-full">
@@ -156,13 +158,12 @@ const Products = ({ products, cart }) => {
                     })),
                   }),
                 });
-
                 if (!response.ok) {
                   throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const result = await response.json();
-                console.log("Item added to cart:", result);
+                console.log("Order placed:", result);
 
                 for (const item of cart) {
                   try {
@@ -180,10 +181,9 @@ const Products = ({ products, cart }) => {
                     );
                   }
                 }
+                router.push(`/invoice/${result._id}`);
               } catch (error) {
                 console.error("Error placing order:", error);
-              } finally {
-                window.location.reload();
               }
             }}
           >
