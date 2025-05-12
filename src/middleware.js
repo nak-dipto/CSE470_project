@@ -13,6 +13,7 @@ export async function middleware(request) {
     pathname.startsWith("/cart") ||
     pathname.startsWith("/invoice") ||
     pathname.startsWith("/search");
+  pathname.startsWith("/orders");
 
   // Check if path is an admin route
   const isAdminRoute = pathname.startsWith("/admin");
@@ -59,6 +60,7 @@ export const config = {
     "/cart/:path*",
     "/invoice/:path*",
     "/search/:path*",
+    "/orders/:path*",
     // Auth routes
     "/api/auth/signin",
     "/auth/signup",
