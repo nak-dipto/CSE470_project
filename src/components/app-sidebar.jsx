@@ -28,6 +28,10 @@ export function AppSidebar({ ...props }) {
             title: "Home",
             url: "/",
           },
+          {
+            title: "About Us",
+            url: "/about",
+          },
           ...(session?.user.role == "user"
             ? [
                 {
@@ -35,8 +39,16 @@ export function AppSidebar({ ...props }) {
                   url: "/shop",
                 },
                 {
-                  title: "My Bookmarks",
+                  title: "Bookmarks",
                   url: "/bookmarks",
+                },
+                {
+                  title: "Cart",
+                  url: "/cart",
+                },
+                {
+                  title: "Order History",
+                  url: "/orders",
                 },
               ]
             : []),
@@ -57,7 +69,7 @@ export function AppSidebar({ ...props }) {
               ]
             : [
                 {
-                  title: "Signin",
+                  title: "SignIn",
                   url: "/api/auth/signin",
                 },
                 {
@@ -73,8 +85,10 @@ export function AppSidebar({ ...props }) {
     <Sidebar {...props}>
       <SidebarHeader>
         <div className="text-2xl font-bold flex justify-center items-center p-2">
-          <FaComputer className="dark inline align-middle" size={40} />
-          &nbsp;ByteBuy
+          <a href="/">
+            <FaComputer className="dark inline align-middle" size={40} />
+            &nbsp;ByteBuy
+          </a>
         </div>
         {session?.user.role == "user" ? <SearchForm /> : ""}
       </SidebarHeader>
