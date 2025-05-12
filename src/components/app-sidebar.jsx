@@ -58,6 +58,14 @@ export function AppSidebar({ ...props }) {
                   title: "Add Product",
                   url: "/admin/create-product",
                 },
+                {
+                  title: "Product List",
+                  url: "/admin/shop",
+                },
+                {
+                  title: "Order History",
+                  url: "/admin/orders",
+                },
               ]
             : []),
           ...(session
