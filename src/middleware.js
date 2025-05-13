@@ -17,6 +17,12 @@ export async function middleware(request) {
 
   // Check if path is an admin route
   const isAdminRoute = pathname.startsWith("/admin");
+  const isCustomerRoute =
+    pathname.startsWith("/bookmarks") ||
+    pathname.startsWith("/cart") ||
+    pathname.startsWith("/orders") ||
+    pathname.startsWith("/search") ||
+    pathname.startsWith("/shop");
 
   // Check if path is auth related
   const isAuthRoute =
@@ -40,6 +46,9 @@ export async function middleware(request) {
 
     // If admin route but user is not admin, redirect to home
     if (isAdminRoute && token.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    if (isCustomerRoute && token.role !== "user") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   } else if (isAuthRoute && token) {
