@@ -12,12 +12,13 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-const Products = ({ categories, products, bookmarks, cart }) => {
+const Products = ({ categories, products, bookmarks = [], cart = [] }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSort, setSelectedSort] = useState("");
 
   const { data: session } = useSession();
-  let user = session?.user.email;
+  const user = session?.user?.email ?? "";
+
   const sortCats = [
     "Newest First",
     "Oldest First",
@@ -25,43 +26,41 @@ const Products = ({ categories, products, bookmarks, cart }) => {
     "Price Descending",
   ];
 
-  // Function to filter products by category
   const filterTags = (array) => {
     if (selectedCategory.toLowerCase() === "all" || selectedCategory === "") {
       return array;
     } else {
       return array.filter(
-        (el) => el.category.toLowerCase() === selectedCategory.toLowerCase()
+        (el) => el.category?.toLowerCase() === selectedCategory.toLowerCase()
       );
     }
   };
 
-  // Function to sort products
   const sortTags = (array) => {
-    let sortedArray = [...array]; // Clone the array to avoid mutation
+    let sortedArray = [...array];
 
-    if (selectedSort.toLowerCase() === "newest first") {
-      return sortedArray.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      ); // Assuming `createdAt` field exists
-    } else if (selectedSort.toLowerCase() === "oldest first") {
-      return sortedArray.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      ); // Assuming `createdAt` field exists
-    } else if (selectedSort.toLowerCase() === "price ascending") {
-      return sortedArray.sort((a, b) => a.price - b.price);
-    } else if (selectedSort.toLowerCase() === "price descending") {
-      return sortedArray.sort((a, b) => b.price - a.price);
-    } else {
-      return sortedArray; // No sort, return the original array
+    switch (selectedSort.toLowerCase()) {
+      case "newest first":
+        return sortedArray.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+      case "oldest first":
+        return sortedArray.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+      case "price ascending":
+        return sortedArray.sort((a, b) => a.price - b.price);
+      case "price descending":
+        return sortedArray.sort((a, b) => b.price - a.price);
+      default:
+        return sortedArray;
     }
   };
-  const userCart = cart.filter((item) => item.user === user);
-  const bookmark = bookmarks.filter((item) => item.user === user);
-  console.log(bookmark);
-  // Apply filter and then sorting
-  let filteredList = filterTags(products);
-  filteredList = sortTags(filteredList);
+
+  const userCart = cart?.filter((item) => item.user === user);
+  const userBookmarks = bookmarks?.filter((item) => item.user === user);
+
+  const filteredList = sortTags(filterTags(products));
 
   return (
     <>
@@ -109,8 +108,10 @@ const Products = ({ categories, products, bookmarks, cart }) => {
             key={product._id}
             product={product}
             user={user}
-            bookmarked={bookmark.find((item) => item.productId === product._id)}
-            addedtoCart={userCart.find(
+            bookmarked={userBookmarks?.find(
+              (item) => item.productId === product._id
+            )}
+            addedtoCart={userCart?.find(
               (item) => item.productId === product._id
             )}
           />
