@@ -15,15 +15,23 @@ const Page = () => {
     try {
       const response = await fetch("/api/shop");
       const response1 = await fetch("/api/cart");
+      const response2 = await fetch("/api/bookmarks");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      if (!response1.ok) {
+        throw new Error(`HTTP error! status: ${response1.status}`);
+      }
+      if (!response2.ok) {
+        throw new Error(`HTTP error! status: ${response2.status}`);
       }
 
       const data = await response.json();
       const data1 = await response1.json();
+      const data2 = await response2.json();
 
       const userBookmarks =
-        data.bookmarks?.filter((item) => item.user === user) || [];
+        data2.bookmarks?.filter((item) => item.user === user) || [];
       setBookmarks(userBookmarks);
       console.log(userBookmarks);
 

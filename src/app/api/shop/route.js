@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import Product from "@/models/product.model";
-import Bookmark from "@/models/bookmark.model";
+// import Bookmark from "@/models/bookmark.model";
 
 export async function GET() {
   try {
     const products = await Product.find({}).sort({ createdAt: -1 });
-    const bookmarks = await Bookmark.find({}).sort({ createdAt: -1 });
-    return NextResponse.json({ products, bookmarks });
+    // const bookmarks = await Bookmark.find({}).sort({ createdAt: -1 });
+    // return NextResponse.json({ products, bookmarks });
+    return NextResponse.json({ products });
   } catch (error) {
     console.log(error.message);
     return NextResponse.json(

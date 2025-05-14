@@ -12,6 +12,7 @@ const Page = () => {
     try {
       const response = await fetch("/api/shop");
       const response1 = await fetch("/api/cart");
+      const response2 = await fetch("/api/bookmarks");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -19,11 +20,15 @@ const Page = () => {
       if (!response1.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      if (!response2.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       const data1 = await response1.json();
+      const data2 = await response2.json();
       setProducts(data.products || []);
-      setBookmarks(data.bookmarks || []);
+      setBookmarks(data2.bookmarks || []);
       setCart(data1.cart || []);
       const uniqueCategories = [
         ...new Set(data.products.map((product) => product.category)),

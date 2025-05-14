@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server";
 import Bookmark from "@/models/bookmark.model";
 
+export async function GET() {
+  try {
+    const bookmarks = await Bookmark.find({}).sort({ createdAt: -1 });
+    return NextResponse.json({ bookmarks });
+  } catch (error) {
+    console.log(error.message);
+    return NextResponse.json(
+      { error: "Failed to get bookmarks" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request) {
   const body = await request.json();
   const { productId, user } = body;
