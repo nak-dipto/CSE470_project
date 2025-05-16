@@ -43,8 +43,8 @@ export async function PUT(request) {
     !_id ||
     !name ||
     !description ||
-    !price ||
-    !stock ||
+    price == null ||
+    stock == null ||
     !image ||
     !category
   ) {

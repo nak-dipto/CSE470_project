@@ -69,7 +69,7 @@ export default function ProductCard({
       <Button
         variant="ghost"
         size="icon"
-        className="bg-white/70 absolute top-3 end-3 rounded-full dark:text-black z-100 flex items-center gap-2 px-3"
+        className="bg-white/70 absolute top-3 end-3 rounded-full dark:text-black z-1 flex items-center gap-2 px-3"
         onClick={() =>
           bookmarked ? deleteBookmark(bookmarked._id) : handleBookmark()
         }

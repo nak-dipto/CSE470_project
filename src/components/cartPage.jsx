@@ -72,8 +72,6 @@ const Products = ({ products, cart }) => {
     setShippingAddress(e.target.value);
   };
 
-  console.log(cart);
-  // console.log(filteredProducts);
   return cart.length === 0 ? (
     <div className="flex flex-wrap justify-center mt-10 text-lg">
       No Products In Cart
@@ -164,6 +162,41 @@ const Products = ({ products, cart }) => {
 
                 const result = await response.json();
                 console.log("Order placed:", result);
+
+                for (const item of filteredProducts) {
+                  console.log(
+                    "look here",
+                    item.stock,
+                    item.quantity,
+                    item.stock - item.quantity
+                  );
+                  try {
+                    const response = await fetch(`/api/shop/${item._id}`, {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        _id: item._id,
+                        name: item.name,
+                        description: item.description,
+                        category: item.category,
+                        price: item.price,
+                        image: item.image,
+                        stock: item.stock - item.quantity,
+                      }),
+                    });
+
+                    if (!response.ok) {
+                      throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                  } catch (error) {
+                    console.error(
+                      "There was a problem with the fetch operation:",
+                      error
+                    );
+                  }
+                }
 
                 for (const item of cart) {
                   try {
