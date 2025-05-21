@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import Cart from "@/models/cart.model";
 import Product from "@/models/product.model";
+import dbConnect from "@/lib/dbConnect";
+await dbConnect();
 
 export async function POST(request) {
   const body = await request.json();

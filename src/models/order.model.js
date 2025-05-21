@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-mongoose.connect(process.env.DATABASE_URL);
+// mongoose.connect(process.env.DATABASE_URL);
 mongoose.Promise = global.Promise;
 
 const ItemSchema = new mongoose.Schema({

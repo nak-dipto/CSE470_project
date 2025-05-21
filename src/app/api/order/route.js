@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import Order from "@/models/order.model";
+import dbConnect from "@/lib/dbConnect";
+await dbConnect();
 
 export async function POST(request) {
   const body = await request.json();

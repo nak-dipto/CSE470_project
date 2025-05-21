@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import Bookmark from "@/models/bookmark.model";
+import dbConnect from "@/lib/dbConnect";
+await dbConnect();
 
 export async function DELETE(_, { params }) {
   const { id } = await params;

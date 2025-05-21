@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import Review from "@/models/review.model";
+import dbConnect from "@/lib/dbConnect";
+await dbConnect();
 
 export async function POST(request) {
   const body = await request.json();
   const { productId, userId, comment } = body;
 
   if (!productId || !userId || !comment) {
-    
     return NextResponse.json(
       { error: "You must fill all the required fields!" },
       { status: 200 }

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import Product from "@/models/product.model";
 // import Bookmark from "@/models/bookmark.model";
 
+import dbConnect from "@/lib/dbConnect";
+await dbConnect();
 export async function GET() {
   try {
     const products = await Product.find({}).sort({ createdAt: -1 });

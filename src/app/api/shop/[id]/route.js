@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import Product from "@/models/product.model";
 import Review from "@/models/review.model";
+import dbConnect from "@/lib/dbConnect";
+await dbConnect();
 export async function GET(_, { params }) {
   const { id } = await params;
 
